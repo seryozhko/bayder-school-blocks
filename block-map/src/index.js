@@ -1,53 +1,18 @@
 const { registerBlockType } = wp.blocks;
-const {	RichText,	AlignmentToolbar, BlockControls } = wp.editor;
 
-registerBlockType( 'bayder-school/block-test', {
-	title: 'Bayder: block-test',
-	icon: 'universal-access-alt',
-	category: 'layout',
-	attributes: {
-		content: {
-			type: 'array',
-			source: 'children',
-			selector: 'p',
-		},
-		alignment: {
-			type: 'string',
-			default: 'none',
-		},		
-	},
-	edit: ( props ) => {
-		const { attributes: { content, alignment }, setAttributes, className } = props;
-		const onChangeContent = newContent => setAttributes( { content: newContent } );
-		const onChangeAlignment = newAlignment => setAttributes( { alignment: newAlignment === undefined ? 'none' : newAlignment } );
+import attributes from './attributes';
+import mapEdit from './edit';
+import mapSave from './save';
 
-		return (
-			<div>
-				{
-					<BlockControls>
-						<AlignmentToolbar
-							value={ alignment }
-							onChange={ onChangeAlignment }
-						/>
-					</BlockControls>
-				}				
-				<RichText
-					tagName="p"
-					style={ { textAlign: alignment } }
-					className={ className }
-					onChange={ onChangeContent }
-					value={ content }
-				/>
-			</div>
-		);
+registerBlockType( 'bayder-school/block-map', {
+	title: 'Карта',
+	icon: 'location-alt',
+	category: 'bayder-school',
+	supports: {
+		html: false,
+		className: false,
 	},
-	save: ( props ) => {
-		const { attributes: { content, alignment } } = props;
-		return (
-		<RichText.Content 
-			className={ `text-${ alignment }` }
-			tagName="p"
-			value={ content }
-		/>)
-	},
+	attributes,
+	edit: mapEdit,
+	save: mapSave,
 } );
