@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 add_filter( 'block_categories', function( $categories, $post ) {
-  return array_merge($categories, [[ 'slug'  => 'bayder-school', 'title' => 'Школа Байдера' ]]);
+  return array_merge($categories, [[ 'slug'  => 'bayder-school', 'title' => 'Школа Байдера', 'icon' => 'admin-generic' ]]);
 }, 10, 2 );
 
 add_action( 'enqueue_block_editor_assets', function() {
@@ -43,3 +43,4 @@ add_action( 'customize_register', 'ymap_customize_register');
 
 
 include 'block-map/index.php';
+include 'block-schedule/index.php';

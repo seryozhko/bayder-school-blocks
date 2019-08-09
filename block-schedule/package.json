@@ -1,11 +1,10 @@
 {
-  "name": "block-map",
+  "name": "block-schedule",
   "version": "1.0.0",
   "license": "GPL-2.0-or-later",
   "main": "src/index.js",
   "devDependencies": {
-    "@wordpress/scripts": "^3.3.0",
-    "react-yandex-maps": "^4.0.1"
+    "@wordpress/scripts": "^3.3.0"
   },
   "scripts": {
     "start": "wp-scripts start",
