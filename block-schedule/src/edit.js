@@ -3,147 +3,7 @@ const {	CheckboxControl, ToggleControl, PanelBody, PanelRow, RangeControl, Selec
 const {	Component, Fragment } = wp.element;
 const { withSelect } = wp.data;
 const { withState } = wp.compose;
-const { InspectorControls, InnerBlocks } = wp.blockEditor;
-
-const TEMPLATE = [
-  ['core/heading', { placeholder: 'Recipe Title', className: 'text-light bg-primary text-uppercase p-2' }],
-  ['core/table', {
-    "hasFixedLayout": true,
-    "head": [
-      {
-        "cells": [
-          {
-            "content": "one",
-            "tag": "th"
-          },
-          {
-            "content": "two",
-            "tag": "th"
-          },
-          {
-            "content": "three",
-            "tag": "th"
-          }
-        ]
-      }
-    ],
-    "body": [
-      {
-        "cells": [
-          {
-            "content": "mon",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          }
-        ]
-      },
-      {
-        "cells": [
-          {
-            "content": "t",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          }
-        ]
-      },
-      {
-        "cells": [
-          {
-            "content": "w",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          }
-        ]
-      },
-      {
-        "cells": [
-          {
-            "content": "t",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          }
-        ]
-      },
-      {
-        "cells": [
-          {
-            "content": "f",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          }
-        ]
-      },
-      {
-        "cells": [
-          {
-            "content": "s",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          }
-        ]
-      },
-      {
-        "cells": [
-          {
-            "content": "s",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          },
-          {
-            "content": "",
-            "tag": "td"
-          }
-        ]
-      }
-    ],
-    "foot": []
-  }]
-];
+const { InspectorControls } = wp.blockEditor;
 
 export default withSelect( select => {
   const locations = select( 'core' ).getEntityRecords( 'taxonomy', 'locations', { hide_empty:true, parent:0 } );
@@ -158,13 +18,8 @@ export default withSelect( select => {
     <div>
       Расписание
       {
-        venuesdata.length &&
-        venues.map(venue => (<div>{ venuesdata.filter( item => item.id === venue )[0].title }</div>))
-      }
-<InnerBlocks 
-	template={TEMPLATE} 
-	templateLock="all" 
-/>      
+        venuesdata.length && venues.map(venue => (<div>{ venuesdata.filter( item => item.id === venue )[0].title }</div>))
+      }    
       <InspectorControls>
         <Fragment>
           {

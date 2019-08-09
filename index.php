@@ -44,3 +44,4 @@ add_action( 'customize_register', 'ymap_customize_register');
 
 include 'block-map/index.php';
 include 'block-schedule/index.php';
+include 'block-table/index.php';
