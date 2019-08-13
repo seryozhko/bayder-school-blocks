@@ -146,8 +146,10 @@ const TEMPLATE = [
 ];
 
 export default props => (<div>
+  { props.attributes.title }
   <InnerBlocks 
 	  template={TEMPLATE} 
-	  templateLock="all" 
+    templateLock="all" 
+    templateInsertUpdatesSelection={false}
   /> 
 </div>);

@@ -1,8 +1,10 @@
 const attributes = {
-  venues: {
-    type: 'array',
-    default: [],
+  venueId: {
+    type: 'number',
   },
+  title: {
+    type: 'string',
+  }
 };
 
 export default attributes;

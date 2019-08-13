@@ -9,6 +9,7 @@ registerBlockType( 'bayder-school/block-table', {
 	description: '',
 	icon: 'editor-table',
 	category: 'bayder-school',
+	parent: ['bayder-school/block-schedule'],
 	// supports: {
 	// 	html: false,
 	// 	className: false,

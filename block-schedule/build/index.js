@@ -136,10 +136,6 @@ function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (O
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-var _wp$editor = wp.editor,
-    RichText = _wp$editor.RichText,
-    AlignmentToolbar = _wp$editor.AlignmentToolbar,
-    BlockControls = _wp$editor.BlockControls;
 var _wp$components = wp.components,
     CheckboxControl = _wp$components.CheckboxControl,
     ToggleControl = _wp$components.ToggleControl,
@@ -148,113 +144,41 @@ var _wp$components = wp.components,
     RangeControl = _wp$components.RangeControl,
     SelectControl = _wp$components.SelectControl,
     TextControl = _wp$components.TextControl;
-var _wp$element = wp.element,
-    Component = _wp$element.Component,
-    Fragment = _wp$element.Fragment;
+var Fragment = wp.element.Fragment;
 var withSelect = wp.data.withSelect;
-var withState = wp.compose.withState;
 var _wp$blockEditor = wp.blockEditor,
     InspectorControls = _wp$blockEditor.InspectorControls,
     InnerBlocks = _wp$blockEditor.InnerBlocks;
-var TEMPLATE = [['core/heading', {
-  placeholder: 'Recipe Title',
-  className: 'text-light bg-primary text-uppercase p-2',
-  level: 5,
-  content: 'Расписание'
-}], ['core/table', {
-  "hasFixedLayout": true,
-  "head": [{
-    "cells": [{
-      "content": "one",
-      "tag": "th"
-    }, {
-      "content": "two",
-      "tag": "th"
-    }, {
-      "content": "three",
-      "tag": "th"
-    }]
-  }],
-  "body": [{
-    "cells": [{
-      "content": "mon",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }]
-  }, {
-    "cells": [{
-      "content": "t",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }]
-  }, {
-    "cells": [{
-      "content": "w",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }]
-  }, {
-    "cells": [{
-      "content": "t",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }]
-  }, {
-    "cells": [{
-      "content": "f",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }]
-  }, {
-    "cells": [{
-      "content": "s",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }]
-  }, {
-    "cells": [{
-      "content": "s",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }, {
-      "content": "",
-      "tag": "td"
-    }]
-  }],
-  "foot": []
-}]];
+
+var getBlockList = function getBlockList() {
+  var schedules = wp.data.select('core/block-editor').getBlocks().filter(function (block) {
+    return block.name === 'bayder-school/block-schedule';
+  });
+  return schedules.length ? schedules[0].innerBlocks.map(function (block) {
+    return block.attributes.venueId;
+  }) : [];
+};
+
+var blockList = getBlockList();
+wp.data.subscribe(function () {
+  return blockList = getBlockList();
+});
+
+var addVenue = function addVenue(venue, clientId) {
+  var blockTable = wp.blocks.createBlock('bayder-school/block-table', {
+    venueId: venue.id,
+    title: venue.title.rendered
+  });
+  wp.data.dispatch('core/block-editor').insertBlock(blockTable, 100, clientId, false);
+};
+
+var removeVenue = function removeVenue(venue, clientId) {
+  var blockId = wp.data.select("core/block-editor").getBlock(clientId).innerBlocks.filter(function (item) {
+    return item.attributes.venueId === venue.id;
+  })[0].clientId;
+  wp.data.dispatch('core/block-editor').removeBlock(blockId, false);
+};
+
 /* harmony default export */ __webpack_exports__["default"] = (withSelect(function (select) {
   var locations = select('core').getEntityRecords('taxonomy', 'locations', {
     hide_empty: true,
@@ -269,44 +193,27 @@ var TEMPLATE = [['core/heading', {
     locations: locations && venues ? locations.map(function (location) {
       return _objectSpread({}, location, {
         venues: venues.filter(function (venue) {
-          return venue.locations.indexOf(location.id) !== -1;
+          return venue.locations.includes(location.id);
         })
       });
-    }) : [],
-    venuesdata: venues ? venues.map(function (venue) {
-      return {
-        id: venue.id,
-        title: venue.title.rendered
-      };
     }) : []
   };
 })(function (_ref) {
   var locations = _ref.locations,
-      venuesdata = _ref.venuesdata,
-      venues = _ref.attributes.venues,
-      setAttributes = _ref.setAttributes;
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", null, "\u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435", venuesdata.length && venues.map(function (venue) {
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", null, venuesdata.filter(function (item) {
-      return item.id === venue;
-    })[0].title);
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(InnerBlocks, {
-    template: TEMPLATE,
-    templateLock: "all"
+      clientId = _ref.clientId;
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", null, "\u0417\u0430\u043B\u044B \u0438 \u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(InnerBlocks, {
+    renderAppender: function renderAppender() {
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", null);
+    }
   }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(InspectorControls, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(Fragment, null, locations && locations.map(function (location) {
     return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(PanelBody, {
-      title: location.name,
-      icon: "null",
-      initialOpen: false
+      title: location.name
     }, location.venues && location.venues.map(function (venue) {
       return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(CheckboxControl, {
         label: venue.title.rendered,
-        checked: venues.indexOf(venue.id) !== -1,
+        checked: blockList.includes(venue.id),
         onChange: function onChange(isChecked) {
-          var newVenues = venues.slice(0);
-          isChecked ? newVenues.push(venue.id) : newVenues.splice(newVenues.indexOf(venue.id), 1);
-          setAttributes({
-            venues: newVenues
-          });
+          return isChecked ? addVenue(venue, clientId) : removeVenue(venue, clientId);
         }
       }));
     }));
@@ -359,9 +266,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
 
-/* harmony default export */ __webpack_exports__["default"] = (function (props) {
-  var venues = props.attributes.venues;
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null);
+var InnerBlocks = wp.blockEditor.InnerBlocks;
+/* harmony default export */ __webpack_exports__["default"] = (function () {
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InnerBlocks.Content, null));
 });
 
 /***/ }),

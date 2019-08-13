@@ -1,9 +1,5 @@
-export default ( props ) => {
-  const {
-    attributes: {
-      venues,
-    }
-  } = props;
+const { InnerBlocks } = wp.blockEditor;
 
-  return (<div></div>);
-};
+export default () => (<div>
+  <InnerBlocks.Content />
+</div>);

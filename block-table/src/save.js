@@ -1,5 +1,9 @@
 const { InnerBlocks } = wp.blockEditor;
 
-export default () => (<div>
-  <InnerBlocks.Content />
-</div>);
+export default ( { attributes } ) => {
+  const { venueId } = attributes;
+  
+  return (<div>
+    <InnerBlocks.Content />
+  </div>)
+};

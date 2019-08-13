@@ -1,6 +1,7 @@
-const {	RichText,	AlignmentToolbar, BlockControls, InspectorControls } = wp.editor;
+const {	RichText,	AlignmentToolbar, BlockControls } = wp.editor;
 const {	CheckboxControl, ToggleControl, PanelBody, RangeControl, SelectControl, TextControl } = wp.components;
 const {	Component, Fragment } = wp.element;
+const { InspectorControls } = wp.blockEditor;
 
 const minZoom = 0;
 const maxZoom = 19;
