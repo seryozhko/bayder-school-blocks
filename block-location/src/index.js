@@ -4,12 +4,12 @@ import attributes from './attributes';
 import mapEdit from './edit';
 import mapSave from './save';
 
-registerBlockType( 'bayder-school/block-table', {
-	title: 'Таблица расписания',
+registerBlockType( 'bayder-school/location', {
+	title: 'Регион',
 	description: '',
-	icon: 'editor-table',
+	icon: 'location',
 	category: 'bayder-school',
-	parent: ['bayder-school/location'],
+	parent: ['bayder-school/schedule'],
 	supports: {
 		html: false,
 		className: false,

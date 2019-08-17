@@ -4,14 +4,14 @@ const { withSelect } = wp.data;
 const { InspectorControls, InnerBlocks } = wp.blockEditor;
 
 const getBlockList = () => {
-  const schedules = wp.data.select( 'core/block-editor' ).getBlocks().filter(block => block.name === 'bayder-school/block-schedule');
+  const schedules = wp.data.select( 'core/block-editor' ).getBlocks().filter(block => block.name === 'bayder-school/schedule');
   return schedules.length ? schedules[0].innerBlocks.map(block => block.attributes.venueId) : [];
 };
 let blockList = getBlockList();
 wp.data.subscribe(() => blockList = getBlockList());
 
 const addVenue = (venue, clientId) => {
-  const blockTable = wp.blocks.createBlock( 'bayder-school/block-table', { venueId: venue.id, title: venue.title.rendered } );
+  const blockTable = wp.blocks.createBlock( 'bayder-school/location', { venueId: venue.id, title: venue.title.rendered } );
   wp.data.dispatch('core/block-editor').insertBlock( blockTable, 100, clientId, false );
 };
 
@@ -29,7 +29,9 @@ export default withSelect( select => {
 } )(({ locations, clientId }) => 
   (<div>
     Залы и Расписание
-    <InnerBlocks renderAppender={ () => (<div></div>) }/>
+    <InnerBlocks
+      renderAppender={ () => (<div></div>) }
+    />
     <InspectorControls>
       <Fragment>
         { locations && locations.map(location => 

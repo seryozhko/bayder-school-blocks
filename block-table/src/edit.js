@@ -1,142 +1,143 @@
-const { InnerBlocks } = wp.blockEditor;
+const {	CheckboxControl, ToggleControl, PanelBody, PanelRow, RangeControl, SelectControl, TextControl, Button } = wp.components;
+const {	Fragment } = wp.element;
+const { InspectorControls, InnerBlocks } = wp.blockEditor;
+
 
 const TEMPLATE = [
   ['core/heading', { 
     placeholder: 'Recipe Title',
     className: 'text-light bg-primary text-uppercase p-2',
     level: 5,
-    content: 'Расписание'
+    content: 'Расписание занятий',
+    align: 'center',
   }],
   ['core/table', {
     "hasFixedLayout": true,
-    "head": [
-      {
-        "cells": [
-          {
-            "content": "one",
-            "tag": "th"
-          },
-          {
-            "content": "two",
-            "tag": "th"
-          },
-          {
-            "content": "three",
-            "tag": "th"
-          }
-        ]
-      }
-    ],
+    "head": [],
     "body": [
       {
         "cells": [
           {
-            "content": "mon",
+            "content": "Понедельник",
             "tag": "td"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           }
         ]
       },
       {
         "cells": [
           {
-            "content": "t",
+            "content": "Вторник",
             "tag": "td"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           }
         ]
       },
       {
         "cells": [
           {
-            "content": "w",
+            "content": "Среда",
             "tag": "td"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           }
         ]
       },
       {
         "cells": [
           {
-            "content": "t",
+            "content": "Четверг",
             "tag": "td"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           }
         ]
       },
       {
         "cells": [
           {
-            "content": "f",
+            "content": "Пятница",
             "tag": "td"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           }
         ]
       },
       {
         "cells": [
           {
-            "content": "s",
+            "content": "Суббота",
             "tag": "td"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           }
         ]
       },
       {
         "cells": [
           {
-            "content": "s",
+            "content": "Воскресенье",
             "tag": "td"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           },
           {
             "content": "",
-            "tag": "td"
+            "tag": "td",
+            "align": "center"
           }
         ]
       }
@@ -145,8 +146,20 @@ const TEMPLATE = [
   }]
 ];
 
-export default props => (<div>
-  { props.attributes.title }
+export default ({ attributes: { title }, clientId }) => (<div>
+  <InspectorControls>
+    <Fragment>
+      <PanelBody>
+        <Button 
+          isPrimary
+          isDestructive
+          onClick={() => wp.data.dispatch( 'core/block-editor' ).removeBlock(clientId, false)}
+        >
+         Удалить эту таблицу
+       </Button>
+      </PanelBody>
+    </Fragment>
+  </InspectorControls>
   <InnerBlocks 
 	  template={TEMPLATE} 
     templateLock="all" 
