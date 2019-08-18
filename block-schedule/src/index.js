@@ -14,7 +14,7 @@ registerBlockType( 'bayder-school/schedule', {
 		className: false,
 		multiple: false,
 		reusable: false,
-		anchor: true,
+		// anchor: true,
 	},
 	attributes,
 	edit: mapEdit,

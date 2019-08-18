@@ -23,6 +23,7 @@ export default ({ attributes: { title }, clientId }) => (<div>
   </InspectorControls>
   <InnerBlocks
     template = {TEMPLATE}
+    allowedBlocks={['bayder-school/block-table']}
     renderAppender={ () => (<div></div>) }
     templateInsertUpdatesSelection={false}
   /> 

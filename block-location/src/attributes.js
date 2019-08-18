@@ -4,7 +4,10 @@ const attributes = {
   },
   title: {
     type: 'string',
-  }
+  },
+  index: {
+    type: 'number',
+  },
 };
 
 export default attributes;
