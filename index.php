@@ -15,13 +15,8 @@ add_filter( 'block_categories', function( $categories, $post ) {
   return array_merge($categories, [[ 'slug'  => 'bayder-school', 'title' => 'Школа Байдера', 'icon' => 'admin-generic' ]]);
 }, 10, 2 );
 
-add_action( 'enqueue_block_editor_assets', function() {
-  wp_register_script( 'yandex-maps','//api-maps.yandex.ru/2.1/?apikey='. get_theme_mod( 'ymap_key' ) .'&lang='. get_bloginfo('language') , [], false, true );
-  wp_enqueue_script( 'yandex-maps' );
-} );
-
 function ymap_customize_register($wp_customize){
-  // Contact Section
+  // Maps settings section
   $wp_customize->add_section('ymap_block', array(
     'title' => 'Настройки карт',
     'description' => 'Настройки блока Яндекс.карт',
@@ -37,6 +32,28 @@ function ymap_customize_register($wp_customize){
     'section' => 'ymap_block',
     'priority' => 1
   ));
+  // Deafault map height
+  $wp_customize->add_setting('ymap_height', array(
+    'default' => '450',
+    'type' => 'theme_mod'
+  ));
+  $wp_customize->add_control('ymap_height', array(
+    'label' => 'Высота блока карты (px)',
+    'section' => 'ymap_block',
+    'priority' => 2
+  ));
+  //Pin image
+  $wp_customize->add_setting('pin_image', array(
+    'default' => '',
+    'type' => 'theme_mod',
+    'transport' => 'postMessage',
+  ));
+  $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'pin_image', array(
+    'label' => 'Выберите изображение для точки на карте',
+    'section' => 'ymap_block',
+    'settings' => 'pin_image',
+    'priority' => 3
+  )));
 }
 
 add_action( 'customize_register', 'ymap_customize_register');

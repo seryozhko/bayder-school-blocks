@@ -4,7 +4,7 @@ import attributes from './attributes';
 import mapEdit from './edit';
 import mapSave from './save';
 
-registerBlockType( 'bayder-school/block-map', {
+registerBlockType( 'bayder-school/map', {
 	title: 'Карта',
 	icon: 'location-alt',
 	category: 'bayder-school',
