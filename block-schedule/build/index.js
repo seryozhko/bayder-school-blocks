@@ -71,6 +71,27 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@babel/runtime/helpers/arrayWithoutHoles.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/arrayWithoutHoles.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) {
+    for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) {
+      arr2[i] = arr[i];
+    }
+
+    return arr2;
+  }
+}
+
+module.exports = _arrayWithoutHoles;
+
+/***/ }),
+
 /***/ "./node_modules/@babel/runtime/helpers/defineProperty.js":
 /*!***************************************************************!*\
   !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
@@ -94,6 +115,57 @@ function _defineProperty(obj, key, value) {
 }
 
 module.exports = _defineProperty;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/iterableToArray.js":
+/*!****************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/iterableToArray.js ***!
+  \****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _iterableToArray(iter) {
+  if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter);
+}
+
+module.exports = _iterableToArray;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/nonIterableSpread.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/nonIterableSpread.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance");
+}
+
+module.exports = _nonIterableSpread;
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/toConsumableArray.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/toConsumableArray.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var arrayWithoutHoles = __webpack_require__(/*! ./arrayWithoutHoles */ "./node_modules/@babel/runtime/helpers/arrayWithoutHoles.js");
+
+var iterableToArray = __webpack_require__(/*! ./iterableToArray */ "./node_modules/@babel/runtime/helpers/iterableToArray.js");
+
+var nonIterableSpread = __webpack_require__(/*! ./nonIterableSpread */ "./node_modules/@babel/runtime/helpers/nonIterableSpread.js");
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || nonIterableSpread();
+}
+
+module.exports = _toConsumableArray;
 
 /***/ }),
 
@@ -127,8 +199,11 @@ var attributes = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
 /* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime/helpers/toConsumableArray */ "./node_modules/@babel/runtime/helpers/toConsumableArray.js");
+/* harmony import */ var _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__);
+
 
 
 
@@ -143,79 +218,112 @@ var _wp$components = wp.components,
     PanelRow = _wp$components.PanelRow,
     RangeControl = _wp$components.RangeControl,
     SelectControl = _wp$components.SelectControl,
-    TextControl = _wp$components.TextControl;
+    TextControl = _wp$components.TextControl,
+    Button = _wp$components.Button;
 var Fragment = wp.element.Fragment;
-var withSelect = wp.data.withSelect;
+var _wp$data = wp.data,
+    withSelect = _wp$data.withSelect,
+    withDispatch = _wp$data.withDispatch;
+var _wp$data2 = wp.data,
+    useDispatch = _wp$data2.useDispatch,
+    useSelect = _wp$data2.useSelect;
+var compose = wp.compose.compose;
 var _wp$blockEditor = wp.blockEditor,
     InspectorControls = _wp$blockEditor.InspectorControls,
     InnerBlocks = _wp$blockEditor.InnerBlocks;
+var blocks = [];
 
-var addVenue = function addVenue(venue, clientId) {
-  var blockTable = wp.blocks.createBlock('bayder-school/location', {
-    venueId: venue.id,
-    title: venue.title.rendered
-  });
-  wp.data.dispatch('core/block-editor').insertBlock(blockTable, 100, clientId, false);
-};
-
-var removeVenue = function removeVenue(venue, clientId) {
-  var blockId = wp.data.select("core/block-editor").getBlock(clientId).innerBlocks.filter(function (item) {
-    return item.attributes.venueId === venue.id;
-  })[0].clientId;
-  wp.data.dispatch('core/block-editor').removeBlock(blockId, false);
-};
-
-var scheduleBlock = function scheduleBlock(_ref) {
-  var locations = _ref.locations,
-      clientId = _ref.clientId,
+var block = function block(_ref) {
+  var addVenue = _ref.addVenue,
+      removeVenue = _ref.removeVenue,
+      updateVenues = _ref.updateVenues,
       setAttributes = _ref.setAttributes,
-      venues = _ref.attributes.venues;
-  var thisBlock = wp.data.select('core/block-editor').getBlock(clientId);
-  var blockList = thisBlock.innerBlocks.map(function (block) {
+      blockList = _ref.blockList,
+      locations = _ref.locations;
+
+  if (JSON.stringify(blocks) !== JSON.stringify(blockList)) {
+    blocks = _babel_runtime_helpers_toConsumableArray__WEBPACK_IMPORTED_MODULE_1___default()(blockList);
+    setAttributes({
+      venues: blocks
+    });
+    updateVenues();
+  }
+
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(InspectorControls, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(Fragment, null, locations && locations.map(function (location) {
+    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(PanelBody, {
+      title: location.name
+    }, location.venues && location.venues.map(function (venue) {
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(CheckboxControl, {
+        label: venue.title.rendered,
+        checked: blockList.find(function (item) {
+          return item.id === venue.id;
+        }) !== undefined,
+        onChange: function onChange(isChecked) {
+          return isChecked ? addVenue({
+            venueId: venue.id,
+            title: venue.title.rendered
+          }) : removeVenue(venue);
+        }
+      }));
+    }));
+  }))), "\u0417\u0430\u043B\u044B \u0438 \u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])("div", {
+    class: "tab-content",
+    id: "nav-tabContent"
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])(InnerBlocks, {
+    allowedBlocks: ['bayder-school/location'],
+    renderAppender: function renderAppender() {
+      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_2__["createElement"])("div", null);
+    }
+  })));
+};
+
+var dispatchFunc = function dispatchFunc(dispatch, ownProps, registry) {
+  var clientId = ownProps.clientId;
+
+  var _registry$select = registry.select('core/block-editor'),
+      getBlocks = _registry$select.getBlocks;
+
+  var innerBlocks = getBlocks(clientId);
+  return {
+    updateVenues: function updateVenues() {
+      var _dispatch = dispatch('core/block-editor'),
+          updateBlockAttributes = _dispatch.updateBlockAttributes;
+
+      innerBlocks.map(function (block, index) {
+        return updateBlockAttributes(block.clientId, {
+          index: index
+        });
+      });
+    },
+    removeVenue: function removeVenue(venue) {
+      var _dispatch2 = dispatch('core/block-editor'),
+          removeBlock = _dispatch2.removeBlock;
+
+      var blockId = innerBlocks.filter(function (item) {
+        return item.attributes.venueId === venue.id;
+      })[0].clientId;
+      removeBlock(blockId, false);
+    },
+    addVenue: function addVenue(opts) {
+      var _dispatch3 = dispatch('core/block-editor'),
+          insertBlock = _dispatch3.insertBlock;
+
+      var blockTable = wp.blocks.createBlock('bayder-school/location', opts);
+      insertBlock(blockTable, 100, clientId, false);
+    }
+  };
+};
+
+var selectFunc = function selectFunc(select, ownProps) {
+  var clientId = ownProps.clientId;
+  var innerBlocks = select('core/block-editor').getBlocks(clientId);
+  var blockList = innerBlocks.map(function (block) {
     return {
       id: block.attributes.venueId,
       title: block.attributes.title,
       tables: block.innerBlocks.length
     };
   });
-
-  if (JSON.stringify(blockList) !== JSON.stringify(venues)) {
-    setAttributes({
-      venues: blockList
-    });
-    thisBlock.innerBlocks.map(function (block, index) {
-      wp.data.dispatch('core/block-editor').updateBlockAttributes(block.clientId, {
-        index: index
-      });
-    });
-  }
-
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(InspectorControls, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(Fragment, null, locations && locations.map(function (location) {
-    return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(PanelBody, {
-      title: location.name
-    }, location.venues && location.venues.map(function (venue) {
-      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(PanelRow, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(CheckboxControl, {
-        label: venue.title.rendered,
-        checked: blockList.find(function (item) {
-          return item.id === venue.id;
-        }) !== undefined,
-        onChange: function onChange(isChecked) {
-          return isChecked ? addVenue(venue, clientId) : removeVenue(venue, clientId);
-        }
-      }));
-    }));
-  }))), "\u0417\u0430\u043B\u044B \u0438 \u0420\u0430\u0441\u043F\u0438\u0441\u0430\u043D\u0438\u0435", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", {
-    class: "tab-content",
-    id: "nav-tabContent"
-  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(InnerBlocks, {
-    allowedBlocks: ['bayder-school/location'],
-    renderAppender: function renderAppender() {
-      return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", null);
-    }
-  })));
-};
-
-var getLocations = function getLocations(select) {
   var locations = select('core').getEntityRecords('taxonomy', 'locations', {
     hide_empty: true,
     parent: 0
@@ -226,6 +334,7 @@ var getLocations = function getLocations(select) {
     })
   }) : [];
   return {
+    blockList: blockList,
     locations: locations && venues ? locations.map(function (location) {
       return _objectSpread({}, location, {
         venues: venues.filter(function (venue) {
@@ -236,7 +345,7 @@ var getLocations = function getLocations(select) {
   };
 };
 
-/* harmony default export */ __webpack_exports__["default"] = (withSelect(getLocations)(scheduleBlock));
+/* harmony default export */ __webpack_exports__["default"] = (compose(withSelect(selectFunc), withDispatch(dispatchFunc))(block));
 
 /***/ }),
 

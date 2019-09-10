@@ -8,6 +8,9 @@ const attributes = {
   index: {
     type: 'number',
   },
+  tablesCount: {
+    type: 'number',
+  }
 };
 
 export default attributes;

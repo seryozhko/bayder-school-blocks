@@ -143,26 +143,20 @@ const TEMPLATE = [
       }
     ],
     "foot": []
-  }]
+  }],
 ];
 
-export default ({ attributes: { title }, clientId }) => (<div>
-  <InspectorControls>
-    <Fragment>
-      <PanelBody>
-        <Button 
-          isPrimary
-          isDestructive
-          onClick={() => wp.data.dispatch( 'core/block-editor' ).removeBlock(clientId, false)}
-        >
-         Удалить эту таблицу
-       </Button>
-      </PanelBody>
-    </Fragment>
-  </InspectorControls>
+export default ({ attributes: { title }, clientId, isSelected }) => (<div>
   <InnerBlocks 
 	  template={TEMPLATE} 
     templateLock="all" 
     templateInsertUpdatesSelection={false}
   /> 
+  {isSelected && (<Button 
+    isPrimary
+    isDestructive
+    onClick={() => wp.data.dispatch( 'core/block-editor' ).removeBlock(clientId, false)}
+  >
+    Удалить эту таблицу
+  </Button>)}
 </div>);

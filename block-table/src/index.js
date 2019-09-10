@@ -1,8 +1,8 @@
 const { registerBlockType } = wp.blocks;
 
 import attributes from './attributes';
-import mapEdit from './edit';
-import mapSave from './save';
+import edit from './edit';
+import save from './save';
 
 registerBlockType( 'bayder-school/block-table', {
 	title: 'Таблица расписания',
@@ -17,6 +17,6 @@ registerBlockType( 'bayder-school/block-table', {
 		reusable: false,
 	},
 	attributes,
-	edit: mapEdit,
-	save: mapSave,
+	edit,
+	save,
 } );
