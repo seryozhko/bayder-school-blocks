@@ -7,7 +7,7 @@ const { compose } = wp.compose;
 
 
 const TEMPLATE = [
-  ['bayder-school/block-table'],
+  ['bayder-school/table'],
 ];
 
 const EMPTY_TEMPLATE = [];
@@ -28,7 +28,7 @@ export default ({ attributes: { title, tablesCount }, setAttributes, clientId })
           <Button
             isDefault
             isDestructive
-            onClick={ () => insertBlock( wp.blocks.createBlock( 'bayder-school/block-table' ), 100, clientId, false ) }
+            onClick={ () => insertBlock( wp.blocks.createBlock( 'bayder-school/table' ), 100, clientId, false ) }
           >
             Добавить Таблицу расписания
           </Button>
@@ -38,7 +38,7 @@ export default ({ attributes: { title, tablesCount }, setAttributes, clientId })
     <InnerBlocks
       template = {hasChildBlocks || tablesCount ===  undefined ? TEMPLATE : EMPTY_TEMPLATE}
       template_lock={false}
-      allowedBlocks={['bayder-school/block-table']}
+      allowedBlocks={['bayder-school/table']}
       renderAppender={ () => (<div></div>) }
       templateInsertUpdatesSelection={false}
     /> 

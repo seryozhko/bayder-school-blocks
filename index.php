@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Bayder School - blocks
+ * Plugin Name: Bayder School
  * Plugin URI: https://seryozhko.me
  * Version: 1.0
  * Author: Seryozhko
@@ -61,5 +61,3 @@ add_action( 'customize_register', 'ymap_customize_register');
 
 include 'block-map/index.php';
 include 'block-schedule/index.php';
-include 'block-location/index.php';
-include 'block-table/index.php';
