@@ -57,10 +57,12 @@ function bayder_school_map_register_block() {
 }
 add_action( 'init', 'bayder_school_map_register_block' );
 
-add_action( 'enqueue_block_editor_assets', function() {
-  wp_register_script( 'yandex-maps','//api-maps.yandex.ru/2.1/?apikey='. get_theme_mod( 'ymap_key' ) .'&lang='. get_bloginfo('language') , [], false, true );
+wp_register_script( 'yandex-maps','//api-maps.yandex.ru/2.1/?apikey='. get_theme_mod( 'ymap_key' ) .'&lang='. get_bloginfo('language') , [], false, true );
+add_action( 'enqueue_block_assets', function() {  
 	wp_enqueue_script( 'yandex-maps' );
+} );
 
+add_action( 'enqueue_block_editor_assets', function() {
 	$ymap_key = get_theme_mod('ymap_key');
 	$ymap_height = get_theme_mod('ymap_height',450);
 	$pin_image = get_theme_mod( 'pin_image' );

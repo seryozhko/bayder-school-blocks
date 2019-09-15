@@ -204,14 +204,14 @@ var InspectorControls = wp.blockEditor.InspectorControls;
 var minZoom = 0;
 var maxZoom = 19;
 
-/* harmony default export */ __webpack_exports__["default"] = (function (props) {
-  var _props$attributes = props.attributes,
-      address = _props$attributes.address,
-      zoom = _props$attributes.zoom,
-      center = _props$attributes.center,
-      point = _props$attributes.point,
-      setAttributes = props.setAttributes,
-      isSelected = props.isSelected;
+/* harmony default export */ __webpack_exports__["default"] = (function (_ref) {
+  var _ref$attributes = _ref.attributes,
+      address = _ref$attributes.address,
+      zoom = _ref$attributes.zoom,
+      center = _ref$attributes.center,
+      point = _ref$attributes.point,
+      setAttributes = _ref.setAttributes,
+      isSelected = _ref.isSelected;
 
   var onChangeAddress = function onChangeAddress(address) {
     ymaps.geocode(address).then(function (result) {
@@ -270,7 +270,7 @@ var maxZoom = 19;
   }))));
   var placeholder = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     class: "placeholder"
-  }, "not");
+  }, address);
   return isSelected ? myComponent : placeholder;
 });
 

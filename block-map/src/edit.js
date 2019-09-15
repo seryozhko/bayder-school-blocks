@@ -8,17 +8,7 @@ const maxZoom = 19;
 
 import { YMaps, Map, Placemark } from 'react-yandex-maps';
 
-export default ( props ) => {
-  const {
-    attributes: {
-      address,
-      zoom,
-      center,
-      point,
-    }, 
-    setAttributes,
-    isSelected,
-  } = props;
+export default ( { attributes: { address, zoom, center, point }, setAttributes, isSelected } ) => {
 
   const onChangeAddress = address => {
     ymaps.geocode(address)
@@ -78,7 +68,9 @@ export default ( props ) => {
     </YMaps>
   </div>);
 
-  const placeholder = (<div class="placeholder">not</div>);
+  const placeholder = (<div class="placeholder">
+    {address}
+  </div>);
 
   return isSelected ? (myComponent) : (placeholder);
 
