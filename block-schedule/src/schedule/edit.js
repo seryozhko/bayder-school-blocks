@@ -10,6 +10,8 @@ const block = ( { addVenue, removeVenue, updateVenues, setAttributes, blockList,
 
   if(JSON.stringify(blocks) !== JSON.stringify(blockList)){
     blocks = [...blockList];
+    const currentMeta = useSelect( select => select( 'core/editor' ).getEditedPostAttribute( 'meta' ) );
+    useDispatch( 'core/editor' ).editPost( { meta: { ...currentMeta, venueIds: JSON.stringify(blocks.map(block => block.id)) } } );
     setAttributes({ venues: blocks });
     updateVenues();
   }
