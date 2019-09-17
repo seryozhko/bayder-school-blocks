@@ -189,8 +189,7 @@ __webpack_require__.r(__webpack_exports__);
 var _wp$editor = wp.editor,
     RichText = _wp$editor.RichText,
     AlignmentToolbar = _wp$editor.AlignmentToolbar,
-    BlockControls = _wp$editor.BlockControls,
-    InspectorControls = _wp$editor.InspectorControls;
+    BlockControls = _wp$editor.BlockControls;
 var _wp$components = wp.components,
     CheckboxControl = _wp$components.CheckboxControl,
     ToggleControl = _wp$components.ToggleControl,
@@ -201,16 +200,18 @@ var _wp$components = wp.components,
 var _wp$element = wp.element,
     Component = _wp$element.Component,
     Fragment = _wp$element.Fragment;
+var InspectorControls = wp.blockEditor.InspectorControls;
 var minZoom = 0;
 var maxZoom = 19;
 
-/* harmony default export */ __webpack_exports__["default"] = (function (props) {
-  var _props$attributes = props.attributes,
-      address = _props$attributes.address,
-      zoom = _props$attributes.zoom,
-      center = _props$attributes.center,
-      point = _props$attributes.point,
-      setAttributes = props.setAttributes;
+/* harmony default export */ __webpack_exports__["default"] = (function (_ref) {
+  var _ref$attributes = _ref.attributes,
+      address = _ref$attributes.address,
+      zoom = _ref$attributes.zoom,
+      center = _ref$attributes.center,
+      point = _ref$attributes.point,
+      setAttributes = _ref.setAttributes,
+      isSelected = _ref.isSelected;
 
   var onChangeAddress = function onChangeAddress(address) {
     ymaps.geocode(address).then(function (result) {
@@ -227,11 +228,16 @@ var maxZoom = 19;
     });
   };
 
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(TextControl, {
-    label: "\u0410\u0434\u0440\u0435\u0441",
-    value: address,
-    onChange: onChangeAddress
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(Fragment, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RangeControl, {
+  var initMap = function initMap(map) {
+    if (!map) return;
+    map.events.add('boundschange', function (e) {
+      e.get('newZoom') !== e.get('oldZoom') ? setAttributes({
+        zoom: e.get('newZoom')
+      }) : null; // e.get('newCenter') !== e.get('oldCenter') ? setAttributes({ center: e.get('newCenter') }) : null;
+    });
+  };
+
+  var myComponent = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(Fragment, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RangeControl, {
     label: "\u041C\u0430\u0441\u0448\u0442\u0430\u0431",
     value: zoom,
     onChange: function onChange(value) {
@@ -241,15 +247,31 @@ var maxZoom = 19;
     },
     min: minZoom,
     max: maxZoom
-  })))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__["YMaps"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__["Map"], {
+  })))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(TextControl, {
+    label: "\u0410\u0434\u0440\u0435\u0441",
+    value: address,
+    onChange: onChangeAddress
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__["YMaps"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__["Map"], {
     state: {
       center: center,
       zoom: zoom
     },
-    width: "100%"
+    width: "100%",
+    height: "".concat(themeMods.mapHeight, "px"),
+    instanceRef: initMap
   }, point && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__["Placemark"], {
-    geometry: JSON.parse(point)
+    geometry: JSON.parse(point),
+    options: {
+      iconLayout: 'default#image',
+      iconImageHref: themeMods.pinImg,
+      iconImageSize: [60, 60],
+      iconImageOffset: [-30, -60]
+    }
   }))));
+  var placeholder = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    class: "placeholder"
+  }, address);
+  return isSelected ? myComponent : placeholder;
 });
 
 /***/ }),
@@ -270,7 +292,7 @@ var registerBlockType = wp.blocks.registerBlockType;
 
 
 
-registerBlockType('bayder-school/block-map', {
+registerBlockType('bayder-school/map', {
   title: 'Карта',
   icon: 'location-alt',
   category: 'bayder-school',
