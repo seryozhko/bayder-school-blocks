@@ -1,8 +1,9 @@
 const { InnerBlocks } = wp.blockEditor;
 
-export default ({ attributes: { venues } }) => (<div>
+export default ({ attributes: { venues } }) => (<div class="card my-2">
+<div class="card-header">
   <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <div class="nav nav-tabs card-header-tabs" id="nav-tab" role="tablist">
       {
         venues.map((venue, index) => 
           venue.tables ? 
@@ -22,8 +23,10 @@ export default ({ attributes: { venues } }) => (<div>
       }        
     </div>
   </nav>
-  
-  <div class="tab-content" id="nav-tabContent">
-    <InnerBlocks.Content />
+  </div>
+  <div class="card-body">
+    <div class="tab-content" id="nav-tabContent">
+      <InnerBlocks.Content />
+    </div>
   </div>
 </div>);
