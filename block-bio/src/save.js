@@ -4,8 +4,8 @@ export default ( props ) => {
   const { attributes: { content, imgUrl, linkUrl, email, phone, alignment }, className } = props;
   
   return (<div className={ `media flex-wrap` }>
-  <img src={ imgUrl } class="align-self-start mx-auto mx-sm-0" />
-  <div class="media-body flex-wrap ml-2">
+  <img src={ imgUrl } class="align-self-center mx-auto mx-sm-0" />
+  <div class="media-body flex-wrap ml-4">
     <RichText.Content 
       className="font-weight-bold text-nowrap" 
       tagName="div" 

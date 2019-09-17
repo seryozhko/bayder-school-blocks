@@ -293,9 +293,9 @@ var RichText = wp.blockEditor.RichText;
     className: "media flex-wrap"
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("img", {
     src: imgUrl,
-    class: "align-self-start mx-auto mx-sm-0"
+    class: "align-self-center mx-auto mx-sm-0"
   }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-    class: "media-body flex-wrap ml-2"
+    class: "media-body flex-wrap ml-4"
   }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RichText.Content, {
     className: "font-weight-bold text-nowrap",
     tagName: "div",
