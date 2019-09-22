@@ -1,4 +1,7 @@
 const attributes = {
+  venueAddress:{
+    type: 'string',
+  },
   address: {
     type: 'string',
   },
@@ -13,6 +16,9 @@ const attributes = {
   point:{
     type: 'string',
   },
+  baloonContent:{
+    type: 'string',
+  }
 };
 
 export default attributes;

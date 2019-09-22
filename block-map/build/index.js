@@ -71,6 +71,32 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./node_modules/@babel/runtime/helpers/defineProperty.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/defineProperty.js ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+module.exports = _defineProperty;
+
+/***/ }),
+
 /***/ "./node_modules/react-yandex-maps/dist/production/react-yandex-maps.esm.js":
 /*!*********************************************************************************!*\
   !*** ./node_modules/react-yandex-maps/dist/production/react-yandex-maps.esm.js ***!
@@ -154,6 +180,9 @@ module.exports = g;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 var attributes = {
+  venueAddress: {
+    type: 'string'
+  },
   address: {
     type: 'string'
   },
@@ -166,6 +195,9 @@ var attributes = {
     default: [55.75, 37.57]
   },
   point: {
+    type: 'string'
+  },
+  baloonContent: {
     type: 'string'
   }
 };
@@ -182,12 +214,19 @@ var attributes = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
-/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-yandex-maps */ "./node_modules/react-yandex-maps/dist/production/react-yandex-maps.esm.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/defineProperty */ "./node_modules/@babel/runtime/helpers/defineProperty.js");
+/* harmony import */ var _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_yandex_maps__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-yandex-maps */ "./node_modules/react-yandex-maps/dist/production/react-yandex-maps.esm.js");
+
+
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _babel_runtime_helpers_defineProperty__WEBPACK_IMPORTED_MODULE_0___default()(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var _wp$editor = wp.editor,
-    RichText = _wp$editor.RichText,
     AlignmentToolbar = _wp$editor.AlignmentToolbar,
     BlockControls = _wp$editor.BlockControls;
 var _wp$components = wp.components,
@@ -200,7 +239,9 @@ var _wp$components = wp.components,
 var _wp$element = wp.element,
     Component = _wp$element.Component,
     Fragment = _wp$element.Fragment;
-var InspectorControls = wp.blockEditor.InspectorControls;
+var _wp$blockEditor = wp.blockEditor,
+    RichText = _wp$blockEditor.RichText,
+    InspectorControls = _wp$blockEditor.InspectorControls;
 var minZoom = 0;
 var maxZoom = 19;
 
@@ -210,17 +251,32 @@ var maxZoom = 19;
       zoom = _ref$attributes.zoom,
       center = _ref$attributes.center,
       point = _ref$attributes.point,
+      venueAddress = _ref$attributes.venueAddress,
+      baloonContent = _ref$attributes.baloonContent,
       setAttributes = _ref.setAttributes,
-      isSelected = _ref.isSelected;
+      clientId = _ref.clientId,
+      className = _ref.className;
+
+  var editMeta = function editMeta(newMeta) {
+    var currentMeta = wp.data.select(function (select) {
+      return select('core/editor').getEditedPostAttribute('meta');
+    });
+    wp.data.dispatch('core/editor').editPost({
+      meta: _objectSpread({}, currentMeta, {}, newMeta)
+    });
+  };
 
   var onChangeAddress = function onChangeAddress(address) {
     ymaps.geocode(address).then(function (result) {
       var point = result.geoObjects.get(0).geometry.getCoordinates();
       setAttributes({
-        center: point
-      });
-      setAttributes({
+        center: point,
         point: JSON.stringify(point)
+      });
+      editMeta({
+        venueAddress: venueAddress,
+        point: JSON.stringify(point),
+        zoom: zoom
       });
     });
     setAttributes({
@@ -228,16 +284,38 @@ var maxZoom = 19;
     });
   };
 
-  var initMap = function initMap(map) {
-    if (!map) return;
-    map.events.add('boundschange', function (e) {
-      e.get('newZoom') !== e.get('oldZoom') ? setAttributes({
-        zoom: e.get('newZoom')
-      }) : null; // e.get('newCenter') !== e.get('oldCenter') ? setAttributes({ center: e.get('newCenter') }) : null;
+  var onVenueAddressChange = function onVenueAddressChange(venueAddress) {
+    setAttributes({
+      venueAddress: venueAddress
+    });
+    editMeta({
+      venueAddress: venueAddress,
+      point: point,
+      zoom: zoom
     });
   };
 
-  var myComponent = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(InspectorControls, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(Fragment, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(PanelBody, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(RangeControl, {
+  var initMap = function initMap(map) {
+    if (!map) return;
+    map.events.add('boundschange', function (e) {
+      if (e.get('newZoom') !== e.get('oldZoom')) {
+        setAttributes({
+          zoom: e.get('newZoom')
+        });
+        editMeta({
+          venueAddress: venueAddress,
+          point: point,
+          zoom: e.get('newZoom')
+        });
+      }
+
+      wp.data.dispatch('core/block-editor').selectBlock(clientId); // e.get('newCenter') !== e.get('oldCenter') ? setAttributes({ center: e.get('newCenter') }) : null;
+    });
+  };
+
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])("div", {
+    className: className
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(InspectorControls, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(Fragment, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(PanelBody, null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(RangeControl, {
     label: "\u041C\u0430\u0441\u0448\u0442\u0430\u0431",
     value: zoom,
     onChange: function onChange(value) {
@@ -247,11 +325,28 @@ var maxZoom = 19;
     },
     min: minZoom,
     max: maxZoom
-  })))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(TextControl, {
-    label: "\u0410\u0434\u0440\u0435\u0441",
+  })))), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(TextControl, {
+    label: "\u0410\u0434\u0440\u0435\u0441 \u0437\u0430\u043B\u0430",
+    value: venueAddress,
+    onChange: function onChange(venueAddress) {
+      return onVenueAddressChange(venueAddress);
+    }
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(TextControl, {
+    label: "\u0410\u0434\u0440\u0435\u0441 \u043C\u0435\u0442\u043A\u0438 \u043D\u0430 \u043A\u0430\u0440\u0442\u0435",
     value: address,
-    onChange: onChangeAddress
-  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__["YMaps"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__["Map"], {
+    onChange: function onChange(newAddress) {
+      return onChangeAddress(newAddress);
+    }
+  }), "\u0422\u0435\u043A\u0441\u0442 \u0432\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0435\u0433\u043E \u043E\u043A\u043D\u0430 \u043C\u0435\u0442\u043A\u0438", Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(RichText, {
+    placeholder: "\u0422\u0435\u043A\u0441\u0442 \u0432\u0441\u043F\u043B\u044B\u0432\u0430\u044E\u0449\u0435\u0433\u043E \u043E\u043A\u043D\u0430 \u043C\u0435\u0442\u043A\u0438",
+    tagName: "div",
+    value: baloonContent,
+    onChange: function onChange(baloonContent) {
+      return setAttributes({
+        baloonContent: baloonContent
+      });
+    }
+  }), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_2__["YMaps"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_2__["Map"], {
     state: {
       center: center,
       zoom: zoom
@@ -259,7 +354,7 @@ var maxZoom = 19;
     width: "100%",
     height: "".concat(themeMods.mapHeight, "px"),
     instanceRef: initMap
-  }, point && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_1__["Placemark"], {
+  }, point && Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__["createElement"])(react_yandex_maps__WEBPACK_IMPORTED_MODULE_2__["Placemark"], {
     geometry: JSON.parse(point),
     options: {
       iconLayout: 'default#image',
@@ -268,10 +363,6 @@ var maxZoom = 19;
       iconImageOffset: [-30, -60]
     }
   }))));
-  var placeholder = Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
-    class: "placeholder"
-  }, address);
-  return isSelected ? myComponent : placeholder;
 });
 
 /***/ }),
@@ -297,12 +388,12 @@ registerBlockType('bayder-school/map', {
   icon: 'location-alt',
   category: 'bayder-school',
   supports: {
-    html: false,
-    className: false
+    html: false // className: false,
+
   },
   attributes: _attributes__WEBPACK_IMPORTED_MODULE_0__["default"],
-  edit: _edit__WEBPACK_IMPORTED_MODULE_1__["default"],
-  save: _save__WEBPACK_IMPORTED_MODULE_2__["default"]
+  edit: _edit__WEBPACK_IMPORTED_MODULE_1__["default"] // save: mapSave,
+
 });
 
 /***/ }),
@@ -321,17 +412,23 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = (function (props) {
   var _props$attributes = props.attributes,
+      venueAddress = _props$attributes.venueAddress,
       address = _props$attributes.address,
       center = _props$attributes.center,
       zoom = _props$attributes.zoom,
       point = _props$attributes.point;
-  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+  return Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("p", {
+    className: "text-center font-weight-bold"
+  }, venueAddress), Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
     className: "ymap-block",
     point: point,
     center: JSON.stringify(center),
-    address: address,
+    address: venueAddress,
     zoom: zoom
-  });
+  }, Object(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__["createElement"])("div", {
+    class: "baloon d-none",
+    title: "{$title}"
+  })));
 });
 
 /***/ }),

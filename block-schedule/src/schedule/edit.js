@@ -21,12 +21,19 @@ const block = ( { addVenue, removeVenue, updateVenues, setAttributes, blockList,
       <Fragment>
         { locations && locations.map(location => 
           <PanelBody title={ location.name }>
-            { location.venues && location.venues.map(venue =>
+            { location.venues && location.venues.map(venue => 
               <PanelRow>
                 <CheckboxControl
                   label={ venue.title.rendered }
                   checked={ blockList.find(item => item.id === venue.id) !== undefined }
-                  onChange={ isChecked => isChecked ? addVenue({ venueId: venue.id, title: venue.title.rendered }) : removeVenue(venue) }
+                  onChange={ isChecked => isChecked ? addVenue({ 
+                      venueId: venue.id,
+                      title: venue.title.rendered,
+                      point: venue.meta.point,
+                      zoom: venue.meta.zoom,
+                      venueAddress: venue.meta.venueAddress
+                    }) : removeVenue(venue)
+                  }
                 />
               </PanelRow>
             ) }
@@ -35,7 +42,7 @@ const block = ( { addVenue, removeVenue, updateVenues, setAttributes, blockList,
       </Fragment>
     </InspectorControls>
     Залы и Расписание
-    <div class="tab-content" id="nav-tabContent">
+    <div>
       <InnerBlocks
         allowedBlocks={['bayder-school/location']}
         renderAppender={ () => (<div></div>) }

@@ -19,13 +19,6 @@ export default ( props ) => {
             onSelect={ onSelectImage }
             render={ ({ open }) => ( <Button onClick={ open }><img src={ imgUrl } className="align-self-start mx-auto mx-sm-0"/></Button> ) }
           />
-          {/* <RangeControl
-            label='Масштаб'
-            value={ zoom }
-            onChange={ value => setAttributes( { zoom: Math.min( Math.max( value, minZoom ), maxZoom ) } ) }
-            min={ minZoom }
-            max={ maxZoom }
-          /> */}
         </PanelBody>
         <PanelBody title="Контакты">
           <TextareaControl

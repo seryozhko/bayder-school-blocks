@@ -10,9 +10,9 @@ registerBlockType( 'bayder-school/map', {
 	category: 'bayder-school',
 	supports: {
 		html: false,
-		className: false,
+		// className: false,
 	},
 	attributes,
 	edit: mapEdit,
-	save: mapSave,
+	// save: mapSave,
 } );

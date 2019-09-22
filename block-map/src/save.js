@@ -1,6 +1,7 @@
 export default ( props ) => {
   const {
     attributes: {
+      venueAddress,
       address,
       center,
       zoom,
@@ -8,5 +9,10 @@ export default ( props ) => {
     }
   } = props;
 
-  return (<div className="ymap-block" point={ point } center={ JSON.stringify(center) } address={ address } zoom={ zoom }></div>);
+  return (<>
+    <p className="text-center font-weight-bold">{venueAddress}</p>
+    <div className="ymap-block" point={ point } center={ JSON.stringify(center) } address={ venueAddress } zoom={ zoom }>
+      <div class='baloon d-none' title='{$title}'></div>
+    </div>
+  </>);
 };

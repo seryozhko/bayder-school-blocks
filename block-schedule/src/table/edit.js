@@ -12,6 +12,7 @@ const TEMPLATE = [
     align: 'center',
   }],
   ['core/table', {
+    "className": 'table table-bordered',
     "hasFixedLayout": true,
     "head": [],
     "body": [

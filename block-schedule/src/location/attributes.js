@@ -10,7 +10,17 @@ const attributes = {
   },
   tablesCount: {
     type: 'number',
-  }
+  },
+  zoom: {
+    type: 'number',
+    default: 16,
+  },	
+  point:{
+    type: 'string',
+  },
+  venueAddress:{
+    type: 'string',
+  },
 };
 
 export default attributes;
