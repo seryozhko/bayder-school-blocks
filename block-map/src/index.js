@@ -2,7 +2,6 @@ const { registerBlockType } = wp.blocks;
 
 import attributes from './attributes';
 import mapEdit from './edit';
-import mapSave from './save';
 
 registerBlockType( 'bayder-school/map', {
 	title: 'Карта',
@@ -14,5 +13,4 @@ registerBlockType( 'bayder-school/map', {
 	},
 	attributes,
 	edit: mapEdit,
-	// save: mapSave,
 } );

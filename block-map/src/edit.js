@@ -20,22 +20,27 @@ export default ( { attributes: { address, zoom, center, point, venueAddress, bal
     .then(result => {
       const point = result.geoObjects.get(0).geometry.getCoordinates(); 
       setAttributes({ center: point, point: JSON.stringify(point) });
-      editMeta({ venueAddress, point: JSON.stringify(point), zoom });
+      editMeta({ venueAddress, point: JSON.stringify(point), zoom, baloonContent });
     })
     setAttributes( { address } );
   };
 
   const onVenueAddressChange = venueAddress => {
     setAttributes({ venueAddress });
-    editMeta({ venueAddress, point, zoom });
+    editMeta({ venueAddress, point, zoom, baloonContent });
   };
+
+  const onChangeBaloonContent = baloonContent => {
+    setAttributes({ baloonContent });
+    editMeta({ venueAddress, point, zoom, baloonContent });
+  }
 
   const initMap = map => {
     if(!map) return;
     map.events.add('boundschange', e => {
       if(e.get('newZoom') !== e.get('oldZoom')){
         setAttributes({ zoom: e.get('newZoom') });
-        editMeta({ venueAddress, point, zoom: e.get('newZoom') });
+        editMeta({ venueAddress, point, zoom: e.get('newZoom'), baloonContent });
       }
       wp.data.dispatch( 'core/block-editor' ).selectBlock(clientId);
       // e.get('newCenter') !== e.get('oldCenter') ? setAttributes({ center: e.get('newCenter') }) : null;
@@ -71,7 +76,7 @@ export default ( { attributes: { address, zoom, center, point, venueAddress, bal
       placeholder="Текст всплывающего окна метки"
       tagName="div"
       value={ baloonContent }
-      onChange={ baloonContent => setAttributes({ baloonContent }) }
+      onChange={ baloonContent => onChangeBaloonContent(baloonContent) }
     />
     <YMaps>
       <Map 

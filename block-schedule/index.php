@@ -67,9 +67,9 @@ function location_render_callback($attributes, $content) {
 
 	return "<div class='{$class}' id='nav-{$venueId}' role='tabpanel' aria-labelledby='{$venueId}-tab'>
     {$content}
-    <p class='text-center font-weight-bold'><a href='{$permalink}'>{$venueAddress}</a></p>
-		<div class='ymap-block' point='{$point}' center='{$point}' zoom='{$zoom}'>
-			<div class='baloon d-none' title='{$title}' link='{$permalink}'>{$baloonContent}</div>
+		<p class='text-center font-weight-bold'><a href='{$permalink}'>{$venueAddress}</a></p>
+		<div class='ymap-block' center='{$point}' zoom='{$zoom}'>
+			<div class='point d-none' title='{$title}' location='{$point}' link='{$permalink}'>{$baloonContent}</div>
 		</div>
   </div>";
 }

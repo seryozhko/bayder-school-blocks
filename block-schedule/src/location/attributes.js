@@ -15,12 +15,15 @@ const attributes = {
     type: 'number',
     default: 16,
   },	
-  point:{
+  point: {
     type: 'string',
   },
-  venueAddress:{
+  venueAddress: {
     type: 'string',
   },
+  baloonContent: {
+    type: 'string',
+  }
 };
 
 export default attributes;

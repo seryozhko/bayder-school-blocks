@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Bayder School
  * Plugin URI: https://seryozhko.me
- * Version: 1.0
+ * Version: 1.1
  * Author: Seryozhko
  *
  * @package bayder-school
@@ -58,6 +58,34 @@ function ymap_customize_register($wp_customize){
 
 add_action( 'customize_register', 'ymap_customize_register');
 
+function add_roles_on_plugin_activation() {
+  add_role('instructor', 'инструктор', [
+    "upload_files" => true,
+    "edit_posts"=> true,
+    "edit_published_posts" => true,
+    "publish_posts" => true,
+    "read" => true,
+    "level_2" => true,
+    "level_1" => true,
+    "level_0" => true,
+    "delete_posts" => true,
+    "delete_published_posts" => true,
+    "publish_instructors" => true,
+    "edit_published_instructors" => true,
+    "edit_instructors" => true,
+    "create_posts" => true,
+    "edit_venues" => true,
+    "manage_locations" => true,
+
+    "unfiltered_html" => true,
+  ]);
+}
+register_activation_hook( __FILE__, 'add_roles_on_plugin_activation' );
+
+function remove_roles_on_plugin_deactivation() {
+  remove_role('instructor');    
+}
+register_deactivation_hook( __FILE__, 'remove_roles_on_plugin_deactivation' );
 
 include 'block-map/index.php';
 include 'block-bio/index.php';

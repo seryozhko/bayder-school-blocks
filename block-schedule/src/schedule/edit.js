@@ -31,7 +31,8 @@ const block = ( { addVenue, removeVenue, updateVenues, setAttributes, blockList,
                       title: venue.title.rendered,
                       point: venue.meta.point,
                       zoom: venue.meta.zoom,
-                      venueAddress: venue.meta.venueAddress
+                      venueAddress: venue.meta.venueAddress,
+                      baloonContent: venue.meta.baloonContent,
                     }) : removeVenue(venue)
                   }
                 />

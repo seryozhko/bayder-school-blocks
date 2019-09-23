@@ -13,10 +13,10 @@ const attributes = {
     type: 'array',
     default: [55.75, 37.57],
   },
-  point:{
+  point: {
     type: 'string',
   },
-  baloonContent:{
+  baloonContent: {
     type: 'string',
   }
 };
