@@ -44,7 +44,7 @@ function ymap_customize_register($wp_customize){
   ));
   //Pin image
   $wp_customize->add_setting('pin_image', array(
-    'default' => '',
+    'default' => plugin_dir_url( __FILE__ ) . 'pin.png',
     'type' => 'theme_mod',
     'transport' => 'postMessage',
   ));
