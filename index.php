@@ -79,6 +79,37 @@ function add_roles_on_plugin_activation() {
 
     "unfiltered_html" => true,
   ]);
+  $admin = get_role('administrator');
+
+  $admin->add_cap('edit_venue');
+  $admin->add_cap('read_venue');
+  $admin->add_cap('delete_venue');
+  $admin->add_cap('edit_venues');
+  $admin->add_cap('edit_others_venues');
+  $admin->add_cap('publish_venues');
+  $admin->add_cap('read_private_venues');
+  $admin->add_cap('delete_venues');
+  $admin->add_cap('delete_private_venues');
+  $admin->add_cap('delete_published_venues');
+  $admin->add_cap('delete_others_venues');
+  $admin->add_cap('edit_private_venues');
+  $admin->add_cap('edit_published_venues');
+  $admin->add_cap('create_venues');
+
+  $admin->add_cap('edit_instructor');
+  $admin->add_cap('read_instructor');
+  $admin->add_cap('delete_instructor');
+  $admin->add_cap('edit_instructors');
+  $admin->add_cap('edit_others_instructors');
+  $admin->add_cap('publish_instructors');
+  $admin->add_cap('read_private_instructors');
+  $admin->add_cap('delete_instructors');
+  $admin->add_cap('delete_private_instructors');
+  $admin->add_cap('delete_published_instructors');
+  $admin->add_cap('delete_others_instructors');
+  $admin->add_cap('edit_private_instructors');
+  $admin->add_cap('edit_published_instructors');
+  $admin->add_cap('create_instructors');
 }
 register_activation_hook( __FILE__, 'add_roles_on_plugin_activation' );
 

@@ -79,7 +79,7 @@ const selectFunc = (select, ownProps) => {
   const innerBlocks = select( 'core/block-editor' ).getBlocks(clientId);
   const blockList = innerBlocks.map(block => ({ id:block.attributes.venueId, title:block.attributes.title, tables:block.innerBlocks.length }));
   const locations = select( 'core' ).getEntityRecords( 'taxonomy', 'locations', { hide_empty:true, parent:0 } );
-  const venues = locations ? select( 'core' ).getEntityRecords( 'postType', 'venues', { locations: locations.map(location => location.id) } ) : [];
+  const venues = locations ? select( 'core' ).getEntityRecords( 'postType', 'venues', { locations: locations.map(location => location.id), per_page: 100 } ) : [];
 
   return {
     blockList,

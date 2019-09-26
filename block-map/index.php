@@ -73,8 +73,8 @@ add_action( 'enqueue_block_assets', function() {
 
 // add_action( 'enqueue_block_editor_assets', function() {
 	$ymap_key = get_theme_mod('ymap_key');
-	$ymap_height = get_theme_mod('ymap_height',450);
-	$pin_image = get_theme_mod( 'pin_image' );
+	$ymap_height = get_theme_mod('ymap_height', 450);
+	$pin_image = get_theme_mod( 'pin_image', plugin_dir_url( __FILE__ ) . '../pin.png' );
 	
 	wp_add_inline_script( 'yandex-maps', "var themeMods={mapKey:'{$ymap_key}',mapHeight:{$ymap_height},pinImg:'{$pin_image}'}" );
 } );
@@ -92,6 +92,6 @@ function map_render_callback($attributes) {
 
 	return "<p class='text-center font-weight-bold'>{$venueAddress}</p>
 	<div class='ymap-block' center='{$center}' zoom='{$zoom}'>
-		<div class='point d-none' title='{$title}' location='{$point}' link='{$permalink}'>{$baloonContent}</div>
+		<div class='point d-none' location='{$point}' title='' link=''><div class='text-center'>{$baloonContent}</div></div>
 	</div>";
 }

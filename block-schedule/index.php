@@ -35,6 +35,10 @@ function bayder_school_block_schedule_register_block() {
 	);
 
 	register_block_type( 'bayder-school/schedule', array(
+		'render_callback' => 'schedule_render_callback',
+		'attributes' => [
+			'venues' => [ 'type' => 'array', 'default' => [] ],
+		],
 		'editor_script' => 'bayder-school-schedule',
 	) );
 	
@@ -54,22 +58,68 @@ function bayder_school_block_schedule_register_block() {
 	
 }
 
+function schedule_render_callback($attributes, $content){
+	if(empty( trim($content) )) return "";
+
+	$venues = $attributes['venues'];
+	$links = '';
+	foreach ($venues as $index => $venue) {
+		if(!empty($venue['tables'])){
+			$active = $index ? '' : ' active';
+			$id = $venue['id'];
+			$title = get_the_title($id);
+			$links .= "<a
+				class='nav-item nav-link{$active}'
+				data-toggle='tab'
+				id='{$id}-tab'
+				href='#nav-{$id}'
+				role='tab'
+				aria-controls='nav-{$id}' 
+				aria-selected='true'
+			>
+				{$title}
+			</a>";
+		}
+	};
+	return "<div class='card my-2'>
+						<div class='card-header'>
+							<nav>
+								<div class='nav nav-tabs card-header-tabs' id='nav-tab' role='tablist'>
+									{$links}
+								</div>
+							</nav>
+						</div>
+						<div class='card-body'>
+							<div class='tab-content' id='nav-tabContent'>
+								{$content}
+							</div>
+						</div>
+					</div>";
+}
+
 function location_render_callback($attributes, $content) {
+	if(empty( trim($content) )) return "";
+	
 	$class = 'tab-pane fade' . ( $attributes['index'] ? '': 'show active' );
 	$venueId = $attributes['venueId'];
+	$blocks = parse_blocks( get_post_field('post_content', $venueId) );
 
-	$venueAddress = $attributes['venueAddress'];
-	$point = $attributes['point'];
-	$zoom = $attributes['zoom'];
-	$baloonContent = $attributes['baloonContent'];
+	foreach ( $blocks as $block ) {
+		if ( 'bayder-school/map' === $block['blockName'] ) {
+			$attrs = $block["attrs"];
+			break;
+		}
+	}
+
+	$zoom = $attrs['zoom'] ? $attrs['zoom'] : 16;
 	$permalink = get_permalink($venueId);
 	$title = get_the_title($venueId);
 
 	return "<div class='{$class}' id='nav-{$venueId}' role='tabpanel' aria-labelledby='{$venueId}-tab'>
     {$content}
-		<p class='text-center font-weight-bold'><a href='{$permalink}'>{$venueAddress}</a></p>
-		<div class='ymap-block' center='{$point}' zoom='{$zoom}'>
-			<div class='point d-none' title='{$title}' location='{$point}' link='{$permalink}'>{$baloonContent}</div>
+		<p class='text-center font-weight-bold'><a href='{$permalink}'>{$attrs['venueAddress']}</a></p>
+		<div class='ymap-block' center='{$attrs['point']}' zoom='{$zoom}'>
+			<div class='point d-none' title='{$title}' location='{$attrs['point']}' link='{$permalink}'><div class='text-center'>{$attrs['baloonContent']}</div></div>
 		</div>
   </div>";
 }

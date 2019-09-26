@@ -5,7 +5,7 @@ const { InspectorControls, InnerBlocks } = wp.blockEditor;
 
 const TEMPLATE = [
   ['core/heading', { 
-    placeholder: 'Recipe Title',
+    placeholder: 'Расписание занятий',
     className: 'text-light bg-primary text-uppercase p-2',
     level: 5,
     content: 'Расписание занятий',
@@ -145,6 +145,7 @@ const TEMPLATE = [
     ],
     "foot": []
   }],
+  ["core/paragraph", { "placeholder": "Комментарий" } ],
 ];
 
 export default ({ attributes: { title }, clientId, isSelected }) => (<div>
@@ -153,11 +154,11 @@ export default ({ attributes: { title }, clientId, isSelected }) => (<div>
     templateLock="all" 
     templateInsertUpdatesSelection={false}
   /> 
-  {isSelected && (<Button 
+  <Button 
     isPrimary
     isDestructive
     onClick={() => wp.data.dispatch( 'core/block-editor' ).removeBlock(clientId, false)}
   >
     Удалить эту таблицу
-  </Button>)}
+  </Button>
 </div>);

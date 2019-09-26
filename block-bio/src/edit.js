@@ -5,10 +5,14 @@ const { InspectorControls } = wp.blockEditor;
 
 export default ( props ) => {
   const { attributes: { content, imgUrl, linkUrl, email, phone, alignment }, setAttributes, className } = props;
-  const onSelectImage = image => setAttributes( { imgUrl: image.sizes.profileThumb.url } );
+  const onSelectImage = (image) => {
+    const imgUrl = image.sizes.profileThumb ? image.sizes.profileThumb.url : image.sizes.full.url;
+    setAttributes( { imgUrl } );
+  };
   const onChangeLinkURL = linkUrl => setAttributes( { linkUrl } ); 
   const onChangeEmail = email => setAttributes( { email: [ email ]  } ); 
   const onChangePhone = phone => setAttributes( { phone } ); 
+  const linksList = (links, makeUrl) => links.split(',').map((item, i, arr) => [<a href={ makeUrl(item) }>{item.trim()}</a>, `${i<arr.length-1 ? ', ' : '' }` ] );
   
   const myComponent = (<div className={className}>
     <h3>Профиль инструктора</h3>
@@ -49,9 +53,9 @@ export default ( props ) => {
         onChange={ content => setAttributes({ content }) }
       />
       <div>
-        { phone.length ? <p class="phone"><span class="font-weight-bold">Телефон: </span> <a href={ `tel:${phone}` }>{ phone }</a></p> : '' }
+        { phone ? <p class="phone"><span class="font-weight-bold">Телефон: </span> { linksList( phone, (item) => `tel:${item.trim().replace(/[^0-9\+]/g, '')}` ) } </p> : '' }
         { email.length ? <p class="email"><span class="font-weight-bold">E-mail: </span> <a href={ `mailto:${email}` }>{ email }</a></p> : '' }
-        { linkUrl ? <p class="sites"><span class="font-weight-bold">Сайт: </span> { linkUrl.split(',').map( (url, i, all) => [<a href={ `//${url.trim()}` } >{ url.trim() }</a>].concat(i + 1 === all.length ? [''] : [' | ']) ) }</p> : '' }
+        { linkUrl ? <p class="sites"><span class="font-weight-bold">Сайт: </span> { linksList( linkUrl, (item) => `//${item.trim()}` ) }</p> : '' }
       </div>
 
     </div>

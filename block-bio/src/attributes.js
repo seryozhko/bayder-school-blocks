@@ -15,8 +15,8 @@ const attributes = {
     source: 'children'
   },
   phone: {
-    selector: 'p.phone a',
-    source: 'children'
+    selector: 'string',
+    default: ''
   },
 };
 
