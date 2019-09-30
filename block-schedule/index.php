@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Bayder School
+ * Plugin Name: Bayder School - Schedule Block
  * Plugin URI: https://seryozhko.me
  * Version: 1.0.0
  * Author: Seryozhko

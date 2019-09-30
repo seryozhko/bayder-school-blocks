@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: Bayder School
+ * Plugin Name: Bayder School - Yandex Maps Block
  * Plugin URI: https://seryozhko.me
  * Version: 1.0.0
  * Author: Seryozhko
@@ -41,14 +41,6 @@ function bayder_school_map_register_block() {
 		filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' )
 	);
 
-	wp_register_style(
-		'bayder-school-map',
-		plugins_url( 'style.css', __FILE__ ),
-		array( ),
-		filemtime( plugin_dir_path( __FILE__ ) . 'style.css' )
-	);
-
-
 	register_block_type( 'bayder-school/map', array(
 		'render_callback' => 'map_render_callback',
 		'attributes' => [
@@ -59,7 +51,6 @@ function bayder_school_map_register_block() {
 			'point' => [ 'type' => 'string' ],
 			'baloonContent' => [ 'type' => 'string' ],
 		],
-		'style' => 'bayder-school-map',
 		'editor_style' => 'bayder-school-map-editor',
 		'editor_script' => 'bayder-school-map',
 	) );
