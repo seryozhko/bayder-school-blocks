@@ -1,21 +1,24 @@
 {
-	"name": "gutenberg-examples",
+	"name": "bayder-school-blocks",
 	"version": "1.0.0",
-	"private": true,
-	"description": "Gutenberg Examples",
-	"repository": "git+https://github.com/WordPress/gutenberg-examples.git",
-	"author": "The WordPress Contributors",
+	"private": false,
+	"description": "custom wordpress gutengerg blocks for bayder-school theme",
+	"repository": "git+https://github.com/seryozhko/bayder-school-blocks.git",
+	"author": "seryozhko",
 	"license": "GPL-2.0-or-later",
 	"keywords": [
 		"WordPress",
 		"editor",
-		"Examples"
+		"Gutenberg"
 	],
 	"scripts": {
 		"lint-js": "eslint .",
 		"lint-js:fix": "eslint . --fix",
-		"build": "npm run build:block-test",
-		"build:block-test": "cd block-test && npm run build"
+		"build": "npm run build:block-bio && npm run build:block-carousel && npm run build:block-map && npm run build:block-schedule",
+		"build:block-bio": "cd block-bio && npm run build",
+		"build:block-carousel": "cd block-carousel && npm run build",
+		"build:block-map": "cd block-map && npm run build",
+		"build:block-schedule": "cd block-schedule && npm run build"
 	},
 	"devDependencies": {
 		"eslint": "^5.2.0",
