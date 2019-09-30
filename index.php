@@ -120,4 +120,5 @@ register_deactivation_hook( __FILE__, 'remove_roles_on_plugin_deactivation' );
 
 include 'block-map/index.php';
 include 'block-bio/index.php';
+include 'block-carousel/index.php';
 include 'block-schedule/index.php';
